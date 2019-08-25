@@ -1,6 +1,6 @@
 ---
-title: "nba"
-output: html_document
+title: "NBA player salary prediction"
+output: github_document
 ---
 
 ```{r}
@@ -16,7 +16,8 @@ nba = subset(nba, select=-c(Player))
 
 ```{r}
 library(leaps)
-set.seed(2)
+set.seed(1)
+
 train=sample(c(TRUE, FALSE), nrow(nba), replace=TRUE, prob=c(0.8,0.2))
 test=(!train)
 regfit.best = regsubsets(Total_salary~., data=nba[train,], nvmax=47,method='forward')
@@ -58,7 +59,10 @@ coef(regfit.best ,which.min(val.errors))
 ```{r}
 regfit.fw = lm(Total_salary~Age+Games+Games_Started+Points_Per_Game+Value_over_Replacement_Player, data=nba)
 summary(regfit.fw)
+```
 
+#### Linear Regression VIF
+```{r}
 library(car)
 vif(regfit.fw)
 ```
